@@ -1,0 +1,31 @@
+{
+  "name": "@timetracker/server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index",
+  "scripts": {
+    "start": "ts-node --esm src/index.ts",
+    "test": "npx nyc --reporter=html ts-mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.29.4"
+  },
+  "mocha": {
+      "spec": "tests",
+      "extension": [
+          "ts"
+      ],
+      "ignore": [
+          "**/*.include.ts"
+      ],
+      "recursive": true,
+      "asyncOnly": true,
+      "exit": true,
+      "timeout": 10000,
+      "fullTrace": true,
+      "bail": true
+  }
+}
