@@ -25,7 +25,7 @@
   ],
   "dependencies": {
     "@prisma/client": "^5.2.0",
-    "nats-micro": "file:../optimacros/micro/nats-micro"
+    "nats-micro": "file:../optimacros/micro"
   },
   "devDependencies": {
     "@types/chai": "^4.2.11",

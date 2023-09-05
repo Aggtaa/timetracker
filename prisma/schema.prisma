@@ -20,10 +20,8 @@ model Event {
 
   //parsed object
   day DateTime
-  startHour Int
-  startMinute Int
-  finishHour Int
-  finishMinute Int
+  start Int @db.Int
+  finish Int @db.Int
   description String
 
   createdAt DateTime @default(now())

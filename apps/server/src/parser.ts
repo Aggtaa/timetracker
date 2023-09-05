@@ -1,17 +1,16 @@
 import { Event } from '@prisma/client';
 import moment from 'moment';
+
 import { strToTokens, toDate } from './utils';
 
-export type ParsedEvent = Pick<Event, 'day' | 'startHour' | 'startMinute' | 'finishHour' | 'finishMinute' | 'description'>;
+export type ParsedEvent = Pick<Event, 'day' | 'start' | 'finish' | 'description'>;
 
 type ParseData = {
   text: string,
   tokens: string[],
   day: Date,
-  startHour: number,
-  startMinute: number,
-  finishHour: number,
-  finishMinute: number,
+  start: number,
+  finish: number,
 }
 
 export class Parser {
@@ -45,10 +44,8 @@ export class Parser {
     data.text = data.text.replace(
       /^(\d?\d):?(\d\d)-(\d?\d):?(\d\d)/,
       (m, sh, sm, fh, fm) => {
-        data.startHour = Number(sh);
-        data.startMinute = Number(sm);
-        data.finishHour = Number(fh);
-        data.finishMinute = Number(fm);
+        data.start = Number(sh) * 60 + Number(sm);
+        data.finish = Number(fh) * 60 + Number(fm);
         return '';
       },
     );
@@ -60,10 +57,8 @@ export class Parser {
       text,
       tokens: [],
       day,
-      startHour: 0,
-      startMinute: 0,
-      finishHour: 0,
-      finishMinute: 0,
+      start: 0,
+      finish: 0,
     };
 
     Parser.extractDate(data);
@@ -73,10 +68,8 @@ export class Parser {
 
     return {
       day: toDate(data.day),
-      startHour: data.startHour,
-      startMinute: data.startMinute,
-      finishHour: data.finishHour,
-      finishMinute: data.finishMinute,
+      start: data.start,
+      finish: data.finish,
       description: data.text,
     };
   }

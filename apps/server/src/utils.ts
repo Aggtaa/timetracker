@@ -1,7 +1,7 @@
-import moment from 'moment';
-
-export function toDate(dt: moment.MomentInput): Date {
-  return moment(moment(dt).format('YYYY-MM-DD'), 'YYYY-MM-DD').toDate();
+export function toDate(dt: Date): Date {
+  const result = new Date(dt);
+  result.setHours(0, 0, 0, 0);
+  return result;
 }
 
 export function mkDate(day: number, month: number, year?: number): Date {
@@ -56,4 +56,17 @@ export function strToTokens(str: string): Token[] {
 
 export function tokensToStr(tokens: Token[]): string {
   return tokens.map((t) => t.text).join(' ');
+}
+
+export function firstDayOfWeek(dateObject: Date, firstDayOfWeekIndex = 1) {
+
+  const dayOfWeek = dateObject.getDay();
+  const result = new Date(dateObject);
+  const diff = dayOfWeek >= firstDayOfWeekIndex
+    ? dayOfWeek - firstDayOfWeekIndex
+    : 6 - dayOfWeek;
+
+  result.setDate(dateObject.getDate() - diff);
+  result.setHours(0, 0, 0, 0);
+  return result;
 }

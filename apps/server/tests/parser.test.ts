@@ -26,6 +26,12 @@ function testParse(...snapshots: Test[]): void {
 
 describe('parser', function () {
 
+  describe('no time', function () {
+    testParse(
+      ['test 15.15', today, 0, 0, 0, 0, 'test 15.15'],
+    );
+  });
+
   describe('times', function () {
     testParse(
       ['0900-1100 test', today, 9, 0, 11, 0, 'test'],
