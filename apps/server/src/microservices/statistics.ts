@@ -1,12 +1,11 @@
 import { Event, Prisma } from '@prisma/client';
-// import { EventWhereInput } from '@prisma/client/';
+import { DayStatistics, Statistics } from '@timetracker/types-lib';
 import {
   microservice, method, z,
 } from 'nats-micro';
 
 import { prisma } from '../prisma';
-import { DayStatistics, Days } from '../time/days';
-import { TimePeriod } from '../types';
+import { Days } from '../time/days';
 import { firstDayOfWeek, toDate } from '../utils';
 
 const dayRequestSchema = z.object({ date: z.date() });
@@ -15,16 +14,11 @@ type DayRequest = z.infer<typeof dayRequestSchema>;
 const weekRequestSchema = z.object({ date: z.date().optional() });
 type WeekRequest = z.infer<typeof weekRequestSchema>;
 
-type DayStats = {
-  events: Event[];
-  days: DayStatistics<TimePeriod[]>[];
-}
-
 @microservice()
 export default class StatisticsMicroservice {
 
   @method()
-  public async day(req: DayRequest): Promise<DayStats | undefined> {
+  public async day(req: DayRequest): Promise<Statistics | undefined> {
 
     const day = toDate(req.date);
 
@@ -32,13 +26,13 @@ export default class StatisticsMicroservice {
   }
 
   @method()
-  public async today(): Promise<DayStats | undefined> {
+  public async today(): Promise<Statistics | undefined> {
 
     return this.get({ day: toDate(new Date()) });
   }
 
   @method()
-  public async week(req: WeekRequest): Promise<DayStats | undefined> {
+  public async week(req: WeekRequest): Promise<Statistics | undefined> {
 
     const start = firstDayOfWeek(req.date || new Date());
     const end = new Date(start.getTime() + 7 * 24 * 60 * 60 * 1000);
@@ -47,13 +41,13 @@ export default class StatisticsMicroservice {
   }
 
   @method()
-  public async all(): Promise<DayStats | undefined> {
+  public async all(): Promise<Statistics | undefined> {
 
     return this.get({});
   }
 
   @method()
-  public async get(filter: Prisma.EventWhereInput): Promise<DayStats | undefined> {
+  public async get(filter: Prisma.EventWhereInput): Promise<Statistics | undefined> {
 
     const events = await prisma.event.findMany({ where: filter });
 

@@ -1,14 +1,7 @@
 import { Event } from '@prisma/client';
+import { DayStatistics } from '@timetracker/types-lib';
 
 import { Busy } from './busy';
-import { TimePeriod } from '../types';
-
-export type DayStatistics<B extends Busy | TimePeriod[]> = {
-  day: Date,
-  busy: B;
-  total: number;
-  totalIncludingOverlapping: number;
-}
 
 export class Days {
   public readonly days: DayStatistics<Busy>[] = [];
@@ -23,6 +16,7 @@ export class Days {
       busy: new Busy(),
       total: 0,
       totalIncludingOverlapping: 0,
+      events: [],
     };
 
     this.days.push(newDay);
@@ -37,8 +31,8 @@ export class Days {
       const day = this.getDay(event.day);
 
       day.busy.add(event);
-
       day.totalIncludingOverlapping += length;
+      day.events.push(event);
     }
 
     for (const day of Object.values(this.days)) {

@@ -1,5 +1,6 @@
+import { TimePeriod } from '@timetracker/types-lib';
+
 import { Times } from './times';
-import { TimePeriod } from '../types';
 
 export class Busy {
   public readonly times: TimePeriod[] = [];

@@ -1,4 +1,4 @@
-import { TimePeriod } from '../types';
+import { TimePeriod } from '@timetracker/types-lib';
 
 export class Times {
   static contains(period: TimePeriod, time: number): boolean {

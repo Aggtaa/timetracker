@@ -8,7 +8,7 @@ import StatisticsMicroservice from './microservices/statistics';
   const events = new EventsMicroservice();
   const statistics = new StatisticsMicroservice();
 
-  const broker = await new Broker('test' + process.pid).connect();
+  const broker = await new Broker('server' + process.pid).connect();
   await Microservice.createFromClass(broker, events);
   await Microservice.createFromClass(broker, statistics);
 })()
